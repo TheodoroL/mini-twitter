@@ -56,7 +56,7 @@ export class RegisterView {
       </main>
     `;
 
-    document.getElementById('go-login').onclick = this.handleGoLoginClick;
-    document.getElementById('register-form').onsubmit = this.handleRegisterFormSubmit;
+    document.getElementById('go-login').onclick = this.handleGoLoginClick.bind(this);
+    document.getElementById('register-form').onsubmit = this.handleRegisterFormSubmit.bind(this);
   }
 }

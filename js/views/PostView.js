@@ -5,7 +5,13 @@ export class PostView {
 
   handlePostFormSubmit(e) {
     e.preventDefault();
-    const content = e.target.querySelector('textarea').value;
+    const textarea = e.target.querySelector('textarea');
+    const content = textarea.value;
+    if (/^\s*$/.test(content)) {
+      alert("só tem espaço vazio, porfavor, escrever alguma mensagem....");
+      textarea.value = "";
+      return;
+    }
     this.controller.handlePost(content);
   };
 
@@ -45,7 +51,7 @@ export class PostView {
       </main>
     `;
 
-    document.getElementById('post-form').onsubmit = this.handlePostFormSubmit;
-    document.getElementById('logout-btn').onclick = this.handleLogoutClick;
+    document.getElementById('post-form').onsubmit = this.handlePostFormSubmit.bind(this);
+    document.getElementById('logout-btn').onclick = this.handleLogoutClick.bind(this);
   }
 }

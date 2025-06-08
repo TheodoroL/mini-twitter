@@ -47,8 +47,8 @@ export class LoginView {
       </main>
     `;
 
-    document.getElementById('go-register').onclick = this.handleGoRegisterClick;
-    document.getElementById('login-form').onsubmit = this.handleLoginFormSubmit;
+    document.getElementById('go-register').onclick = this.handleGoRegisterClick.bind(this);
+    document.getElementById('login-form').onsubmit = this.handleLoginFormSubmit.bind(this);
   }
 }
 
