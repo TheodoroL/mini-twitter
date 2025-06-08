@@ -3,12 +3,12 @@ export class RegisterView {
     this.controller = controller;
   }
 
-  handleGoLoginClick = (e) => {
+  handleGoLoginClick(e) {
     e.preventDefault();
     this.controller.showLogin();
   };
 
-  handleRegisterFormSubmit = (e) => {
+  handleRegisterFormSubmit(e) {
     e.preventDefault();
     const [username, email, password] = e.target.querySelectorAll('input');
     this.controller.handleRegister(username.value, email.value, password.value);

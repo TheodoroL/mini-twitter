@@ -3,13 +3,13 @@ export class PostView {
     this.controller = controller;
   }
 
-  handlePostFormSubmit = (e) => {
+  handlePostFormSubmit(e) {
     e.preventDefault();
     const content = e.target.querySelector('textarea').value;
     this.controller.handlePost(content);
   };
 
-  handleLogoutClick = () => {
+  handleLogoutClick() {
     this.controller.logout();
   };
 
