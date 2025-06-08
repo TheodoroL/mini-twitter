@@ -1,6 +1,6 @@
 import { LoginView } from '../views/LoginView.js';
 import { RegisterView } from '../views/RegisterView.js';
-import { ApiRepository } from '../repositories/api.js';
+import { ApiRepository } from '../repositories/ApiRepository.js';
 import { PostController } from './PostController.js';
 
 const BASE_URL = 'https://mini-twitter-api-vy9q.onrender.com/api';

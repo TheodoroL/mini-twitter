@@ -1,5 +1,5 @@
 import { PostView } from '../views/PostView.js';
-import { ApiRepository } from '../repositories/api.js';
+import { ApiRepository } from '../repositories/ApiRepository.js';
 
 const BASE_URL = "https://mini-twitter-api-vy9q.onrender.com/api"
 
