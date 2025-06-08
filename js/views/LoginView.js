@@ -1,8 +1,18 @@
-
 export class LoginView {
   constructor(controller) {
     this.controller = controller;
   }
+
+  handleGoRegisterClick = (e) => {
+    e.preventDefault();
+    this.controller.showRegister();
+  };
+
+  handleLoginFormSubmit = (e) => {
+    e.preventDefault();
+    const [email, password] = e.target.querySelectorAll('input');
+    this.controller.handleLogin(email.value, password.value);
+  };
 
   render(container) {
     container.innerHTML = `
@@ -10,10 +20,22 @@ export class LoginView {
         <h1 class="login-title">Login</h1>
         <form id="login-form">
           <div class="form-group">
-            <input type="email" placeholder="Email" required />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              autocomplete="email"
+            />
           </div>
           <div class="form-group">
-            <input type="password" placeholder="Senha" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Senha"
+              required
+              autocomplete="current-password"
+            />
           </div>
           <div class="form-group">
             <input type="submit" value="Entrar" class="submit-btn" />
@@ -24,14 +46,9 @@ export class LoginView {
         </div>
       </main>
     `;
-    document.getElementById('go-register').onclick = (e) => {
-      e.preventDefault();
-      this.controller.showRegister();
-    };
-    document.getElementById('login-form').onsubmit = (e) => {
-      e.preventDefault();
-      const [email, password] = e.target.querySelectorAll('input');
-      this.controller.handleLogin(email.value, password.value);
-    };
+
+    document.getElementById('go-register').onclick = this.handleGoRegisterClick;
+    document.getElementById('login-form').onsubmit = this.handleLoginFormSubmit;
   }
 }
+

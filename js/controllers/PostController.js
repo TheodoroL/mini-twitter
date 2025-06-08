@@ -1,12 +1,12 @@
 import { PostView } from '../views/PostView.js';
-import { ApiService } from '../repositories/api.js';
+import { ApiRepository } from '../repositories/api.js';
 
 const BASE_URL = "https://mini-twitter-api-vy9q.onrender.com/api"
 
 export class PostController {
   constructor(container) {
     this.container = container;
-    this.api = new ApiService(BASE_URL);
+    this.api = new ApiRepository(BASE_URL);
   }
 
   async showFeed() {

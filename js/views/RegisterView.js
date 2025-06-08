@@ -1,8 +1,18 @@
-
 export class RegisterView {
   constructor(controller) {
     this.controller = controller;
   }
+
+  handleGoLoginClick = (e) => {
+    e.preventDefault();
+    this.controller.showLogin();
+  };
+
+  handleRegisterFormSubmit = (e) => {
+    e.preventDefault();
+    const [username, email, password] = e.target.querySelectorAll('input');
+    this.controller.handleRegister(username.value, email.value, password.value);
+  };
 
   render(container) {
     container.innerHTML = `
@@ -10,13 +20,31 @@ export class RegisterView {
         <h1 class="login-title">Cadastro</h1>
         <form id="register-form">
           <div class="form-group">
-            <input type="text" placeholder="Nome de usuário" required />
+            <input
+              type="text"
+              name="username"
+              placeholder="Nome de usuário"
+              required
+              autocomplete="username"
+            />
           </div>
           <div class="form-group">
-            <input type="email" placeholder="Email" required />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              autocomplete="email"
+            />
           </div>
           <div class="form-group">
-            <input type="password" placeholder="Senha" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Senha"
+              required
+              autocomplete="new-password"
+            />
           </div>
           <div class="form-group">
             <input type="submit" value="Cadastrar" class="submit-btn" />
@@ -27,14 +55,8 @@ export class RegisterView {
         </div>
       </main>
     `;
-    document.getElementById('go-login').onclick = (e) => {
-      e.preventDefault();
-      this.controller.showLogin();
-    };
-    document.getElementById('register-form').onsubmit = (e) => {
-      e.preventDefault();
-      const [username, email, password] = e.target.querySelectorAll('input');
-      this.controller.handleRegister(username.value, email.value, password.value);
-    };
+
+    document.getElementById('go-login').onclick = this.handleGoLoginClick;
+    document.getElementById('register-form').onsubmit = this.handleRegisterFormSubmit;
   }
 }

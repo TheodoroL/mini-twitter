@@ -1,4 +1,4 @@
-export class ApiService {
+export class ApiRepository {
   constructor(baseURL) {
     this.baseURL = baseURL;
   }

@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f2f5;
@@ -20,6 +26,9 @@ main {
     padding: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: padding 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .login-title {
@@ -40,6 +49,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 8px;
     box-sizing: border-box;
+    resize: none;
 }
 
 .submit-btn,
@@ -74,10 +84,31 @@ button:hover {
     text-decoration: underline;
 }
 
+.timeline {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scroll-behavior: smooth;
+}
+
+.timeline::-webkit-scrollbar {
+    width: 8px;
+}
+
+.timeline::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.timeline::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
+
 .timeline .tweet {
+    margin-top: 1rem;
     background: #fff;
     border-radius: 12px;
-    padding: 1rem;
+    padding: 1.5rem;
     margin-bottom: 1rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
@@ -85,7 +116,6 @@ button:hover {
 .tweet strong {
     color: #1da1f2;
 }
-
 
 @media (max-width: 480px) {
     #app {
@@ -106,6 +136,10 @@ button:hover {
         font-size: 0.9rem;
         padding: 0.6rem;
     }
+
+    .timeline {
+        max-height: 250px;
+    }
 }
 
 @media (max-width: 768px) and (min-width: 481px) {
@@ -116,5 +150,9 @@ button:hover {
 
     main {
         padding: 1.5rem;
+    }
+
+    .timeline {
+        max-height: 280px;
     }
 }
