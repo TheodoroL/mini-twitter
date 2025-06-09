@@ -77,7 +77,7 @@ export class PostView {
     this.controller.container.innerHTML = `
             <header class="header">
                 <div class="container header-container">
-                    <h1 class="logo">Mini Twitter</h1>
+                    <h1 class="logo">MINI TWITTER</h1>
                     <div class="user-actions">
                         <button class="btn profile-btn">Meu Perfil</button>
                         <button class="btn logout-btn">Sair</button>
@@ -87,9 +87,8 @@ export class PostView {
 
             <main class="container">
                 <section class="new-post">
-                    <textarea class="new-post-input" placeholder="No que você está pensando?" maxlength="280"></textarea>
+                    <textarea class="new-post-input" placeholder="digite o que você está pensando?" maxlength="280"></textarea>
                     <div class="new-post-footer">
-                        <span class="char-count">0 / 280</span>
                         <button class="btn publish-btn">Publicar</button>
                     </div>
                 </section>
@@ -116,12 +115,6 @@ export class PostView {
     const publishButton = this.controller.container.querySelector('.publish-btn');
     publishButton.addEventListener('click', this.onSubmitPost.bind(this));
 
-    const postContent = this.controller.container.querySelector('.new-post-input');
-    const charCount = this.controller.container.querySelector('.char-count');
-
-    postContent.addEventListener('input', () => {
-      charCount.textContent = `${postContent.value.length} / 280`;
-    });
   }
 
   renderPosts(posts, user) {
@@ -192,7 +185,7 @@ export class PostView {
 
       deleteButton.classList.add('delete-btn');
       deleteButton.title = 'Excluir postagem';
-      deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
 
       postActions.appendChild(deleteButton);
     }

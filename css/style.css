@@ -181,9 +181,8 @@
 
 .logo {
     font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: 900;
     color: #1da1f2;
-    /* Verde-água */
     letter-spacing: 0.5px;
 }
 
@@ -221,6 +220,7 @@
     margin: 2rem 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
+
 }
 
 .new-post:hover {
@@ -233,7 +233,7 @@
     padding: 0.75rem;
     border: 1px solid #e6e6e6;
     border-radius: 8px;
-    resize: vertical;
+    resize: none;
     font-size: 1rem;
     margin-bottom: 0.5rem;
     transition: border-color 0.3s, box-shadow 0.3s;
