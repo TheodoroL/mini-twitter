@@ -15,6 +15,24 @@ Este projeto é uma versão simplificada do Twitter, desenvolvida com **HTML**, 
 - **Design responsivo** (abordagem *mobile-first*)  
 - **Armazenamento local com `localStorage`**  
 
+## 🖥️ Capturas de Tela 
+
+Abaixo estão algumas telas da aplicação em funcionamento:
+
+### Desktop
+<p align="center">
+  <img src="./screenshots/login-desktop.png" alt="Tela de Login" width="400" />
+  <img src="./screenshots/cadastro-desktop.png" alt="Tela de Cadastro" width="400" />
+  <img src="./screenshots/post-desktop.png" alt="Feed de Postagens" width="400" />
+</p>
+
+### Mobile
+<p align="center">
+  <img src="./screenshots/login-mobile.png" alt="Tela de Login" width="220" />
+  <img src="./screenshots/cadastro-mobile.png" alt="Tela de Cadastro" width="220" />
+  <img src="./screenshots/post-mobile.png" alt="Feed de Postagens" width="220" />
+</p>
+
 ---
 
 ### ▶️ Como acessar o projeto
