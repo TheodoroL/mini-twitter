@@ -1,8 +1,9 @@
 import gateways from "../gateways.js";
 import { PostRepository } from "../repositories/PostRepository.js";
 import { StorageRepository } from "../repositories/StorageRepository.js";
-import { PostView } from "../views/PostView.js";
+import { PostView } from "../views/postView.js";
 import { AuthController } from "./AuthController.js";
+import { ProfileController } from "./ProfileController.js";
 
 export class PostController {
   /**
@@ -23,27 +24,35 @@ export class PostController {
   /**
    * @type {PostView}
    */
-  #PostView;
+  #postView;
 
   #lastPostResponseSize = 0;
+  #isVisible = false;
 
   constructor(container) {
     this.container = container;
     this.postRepository = new PostRepository(gateways.POSTS_URL);
     this.storageRepository = new StorageRepository();
-    this.#PostView = new PostView(this);
+    this.#postView = new PostView(this);
   }
 
   handleLogout() {
     this.storageRepository.clear();
     new AuthController(this.container).showLoginView();
+    this.#isVisible = false;
   }
 
-  async showFeedView() {
+  async showProfile() {
+    await new ProfileController(this.container).showProfileView();
+    this.#isVisible = false;
+  }
+
+  async showPostView() {
+    this.#isVisible = true;
     const token = this.storageRepository.getItem('token');
     if (!token) return location.reload();
 
-    this.#PostView.render();
+    this.#postView.render();
     await this.loadPosts();
   }
 
@@ -56,18 +65,19 @@ export class PostController {
 
       if (result.ok) {
         this.#lastPostResponseSize = result.size || 0;
-        this.#PostView.renderPosts(result.posts, JSON.parse(this.storageRepository.getItem('user')));
+        this.#postView.renderPosts(result.posts, JSON.parse(this.storageRepository.getItem('user')));
         await this.#watchNewPosts();
       } else {
-        this.#PostView.showError(result.error || 'Erro ao carregar posts.');
+        this.#postView.showError(result.error || 'Erro ao carregar posts.');
       }
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
-      this.#PostView.showError('Não foi possível carregar os posts.');
+      this.#postView.showError('Não foi possível carregar os posts.');
     }
   }
 
   async #watchNewPosts() {
+    if (!this.#isVisible) return;
     const token = this.storageRepository.getItem('token');
     if (!token) return location.reload();
 
@@ -75,7 +85,7 @@ export class PostController {
       const result = await this.postRepository.fetchAllPostsResponseSize(token);
 
       if (!result.ok) {
-        this.#PostView.showError(result.error || 'Erro ao carregar posts.');
+        this.#postView.showError(result.error || 'Erro ao carregar posts.');
         return;
       }
 
@@ -84,7 +94,7 @@ export class PostController {
       }
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
-      this.#PostView.showError('Não foi possível carregar os posts.');
+      this.#postView.showError('Não foi possível carregar os posts.');
     }
 
     setTimeout(async () => {
@@ -100,12 +110,12 @@ export class PostController {
       const result = await this.postRepository.createPost(token, content);
 
       if (result.ok) {
-        this.#PostView.addPost(result.post, JSON.parse(this.storageRepository.getItem('user')), true);
+        this.#postView.addPost(result.post, JSON.parse(this.storageRepository.getItem('user')), true);
       } else {
-        this.#PostView.showError(result.error || 'Erro ao publicar o post.');
+        this.#postView.showError(result.error || 'Erro ao publicar o post.');
       }
     } catch (error) {
-      this.#PostView.showError('Não foi possível publicar o post.');
+      this.#postView.showError('Não foi possível publicar o post.');
     }
   }
 

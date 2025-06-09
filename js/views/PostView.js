@@ -79,8 +79,8 @@ export class PostView {
                 <div class="container header-container">
                     <h1 class="logo">MINI TWITTER</h1>
                     <div class="user-actions">
-                        <button class="btn profile-btn">Meu Perfil</button>
-                        <button class="btn logout-btn">Sair</button>
+                        <button class="btn profile-btn"><i class="fa-regular fa-user"></i></button>
+                        <button class="btn logout-btn"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
             </header>
@@ -89,7 +89,7 @@ export class PostView {
                 <section class="new-post">
                     <textarea class="new-post-input" placeholder="digite o que você está pensando?" maxlength="280"></textarea>
                     <div class="new-post-footer">
-                        <button class="btn publish-btn">Publicar</button>
+                        <button class="btn publish-btn"><i class="fa-regular fa-paper-plane"></i></button>
                     </div>
                 </section>
 

@@ -7,7 +7,7 @@ const storageRepository = new StorageRepository();
 
 if (storageRepository.getItem('token')) {
     const postController = new PostController(app);
-    postController.showFeedView();
+    postController.showPostView();
 } else {
     const authController = new AuthController(app);
     authController.showLoginView();

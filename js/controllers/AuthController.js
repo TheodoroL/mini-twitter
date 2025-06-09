@@ -58,7 +58,7 @@ export class AuthController {
       this.storageRepository.clear(); // Limpa o armazenamento local antes de armazenar novos dados
       this.storageRepository.setItem('token', result.token);
       this.storageRepository.setItem('user', JSON.stringify(result.user));
-      new PostController(this.container).showFeedView(); // Redireciona para a página de feed após o login bem-sucedido
+      new PostController(this.container).showPostView(); // Redireciona para a página de feed após o login bem-sucedido
     } else {
       // Exibir mensagem de erro
       this.#loginView.showError(result.error);
