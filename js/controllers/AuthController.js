@@ -1,43 +1,81 @@
-import { LoginView } from '../views/LoginView.js';
-import { RegisterView } from '../views/RegisterView.js';
-import { ApiRepository } from '../repositories/ApiRepository.js';
-import { PostController } from './PostController.js';
-
-const BASE_URL = 'https://mini-twitter-api-vy9q.onrender.com/api';
-
+import gateways from "../gateways.js";
+import { AuthRepository } from "../repositories/AuthRepository.js";
+import { StorageRepository } from "../repositories/StorageRepository.js";
+import { LoginView } from "../views/LoginView.js";
+import { RegisterView } from "../views/RegisterView.js";
+import { PostController } from "./PostController.js";
 export class AuthController {
+  /**
+   * @type {LoginView}
+   */
+  #loginView;
+
+  /**
+   * @type {RegisterView}
+   */
+  #registerView;
+
+  /**
+   * @type {StorageRepository}
+   */
+  storageRepository;
+
+  /**
+   * @type {AuthRepository}
+   */
+  authRepository;
+  /**
+   * @type {HTMLElement}
+   */
+  container;
+
+  /**
+   * @param {HTMLElement} container 
+   */
   constructor(container) {
     this.container = container;
-    this.api = new ApiRepository(BASE_URL);
+
+    this.authRepository = new AuthRepository(gateways.AUTH_URL);
+    this.storageRepository = new StorageRepository();
+
+    this.#loginView = new LoginView(this);
+    this.#registerView = new RegisterView(this);
   }
 
-  showLogin() {
-    const view = new LoginView(this);
-    view.render(this.container);
+  showLoginView() {
+    this.#loginView.render();
   }
 
-  showRegister() {
-    const view = new RegisterView(this);
-    view.render(this.container);
+  showRegisterView() {
+    this.#registerView.render();
   }
 
-  async handleLogin(email, password) {
-    try {
-      const data = await this.api.login(email, password);
-      localStorage.setItem('token', data.token);
-      new PostController(this.container, this.api).showFeed();
-    } catch (e) {
-      alert(e.message);
+  async handleLoginRequest(email, password) {
+    const result = await this.authRepository.login(email, password);
+
+    if (result.ok) {
+      // Armazenar o token e o usuário no localStorage
+      this.storageRepository.clear(); // Limpa o armazenamento local antes de armazenar novos dados
+      this.storageRepository.setItem('token', result.token);
+      this.storageRepository.setItem('user', JSON.stringify(result.user));
+      new PostController(this.container).showFeedView(); // Redireciona para a página de feed após o login bem-sucedido
+    } else {
+      // Exibir mensagem de erro
+      this.#loginView.showError(result.error);
     }
   }
 
-  async handleRegister(username, email, password) {
-    try {
-      await this.api.register(username, email, password);
-      alert('Cadastro feito com sucesso!');
-      this.showLogin();
-    } catch (e) {
-      alert(e.message);
+  async handleRegisterRequest(name, email, password) {
+    const result = await this.authRepository.register(name, email, password);
+
+    if (result.ok) {
+      // Armazenar o token e o usuário no localStorage
+      this.storageRepository.setItem('token', result.token);
+      this.storageRepository.setItem('user', JSON.stringify(result.user));
+      new PostController(this.container).showFeedView(); // Redireciona para a página de feed após o registro bem-sucedido
+    } else {
+      // Exibir mensagem de erro
+      this.#registerView.showError(result.error);
     }
   }
 }
