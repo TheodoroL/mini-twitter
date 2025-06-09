@@ -1,7 +1,7 @@
 import gateways from "../gateways.js";
 import { PostRepository } from "../repositories/PostRepository.js";
 import { StorageRepository } from "../repositories/StorageRepository.js";
-import { PostView } from "../views/postView.js";
+import { PostView } from "../views/PostView.js";
 import { AuthController } from "./AuthController.js";
 import { ProfileController } from "./ProfileController.js";
 
