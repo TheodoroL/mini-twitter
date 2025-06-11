@@ -1,91 +1,88 @@
+/**
+ * Repositório responsável por autenticação de usuários via API.
+ */
 export class AuthRepository {
-    /**
-     * @type {string}
-     */
+    /** @type {string} */
     baseUrl;
-
+  
+    /**
+     * @param {string} baseUrl - URL base da API de autenticação.
+     */
     constructor(baseUrl) {
-        this.baseUrl = baseUrl;
+      this.baseUrl = baseUrl;
     }
-
+  
     /**
      * Realiza o login de um usuário.
-     * @param {string} email - O email do usuário.
-     * @param {string} password - A senha do usuário.
-     * @return {Promise<{ok: false, error: string} | {ok: true, user: object, token: string}>}
+     * 
+     * @param {string} email - Email do usuário.
+     * @param {string} password - Senha do usuário.
+     * @returns {Promise<{ok: true, user: object, token: string} | {ok: false, error: string}>}
+     * Retorna um objeto com `ok: true` se o login for bem-sucedido, contendo usuário e token.
+     * Caso contrário, retorna `ok: false` com uma mensagem de erro.
      */
     async login(email, password) {
-        const response = await fetch(`${this.baseUrl}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        if (!response.ok) {
-            const result = {
-                ok: false
-            };
-
-            if (response.status === 401) {
-                result.error = 'Email ou senha inválidos';
-            } else if (response.status === 500) {
-                result.error = 'Erro interno do servidor';
-            } else {
-                result.error = 'Erro desconhecido';
-            }
-
-            return result;
-        }
-
-        const data = await response.json();
-
+      const response = await fetch(`${this.baseUrl}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+  
+      if (!response.ok)
         return {
-            ok: true,
-            user: data.user,
-            token: data.token
-        }
+          ok: false,
+          error:
+            response.status === 401
+              ? 'Email ou senha inválidos'
+              : response.status === 500
+              ? 'Erro interno do servidor'
+              : 'Erro desconhecido'
+        };
+  
+      const data = await response.json();
+  
+      return {
+        ok: true,
+        user: data.user,
+        token: data.token
+      };
     }
-
+  
     /**
      * Registra um novo usuário.
-     * @param {string} username - O nome de usuário do novo usuário.
-     * @param {string} email - O email do novo usuário.
-     * @param {string} password - A senha do novo usuário.
-     * @return {Promise<{ok: false, error: string} | {ok: true, user: object, token: string}>}
+     * 
+     * @param {string} username - Nome de usuário.
+     * @param {string} email - Email do novo usuário.
+     * @param {string} password - Senha do novo usuário.
+     * @returns {Promise<{ok: true, user: object, token: string} | {ok: false, error: string}>}
+     * Retorna um objeto com `ok: true` se o registro for bem-sucedido, contendo usuário e token.
+     * Caso contrário, retorna `ok: false` com uma mensagem de erro.
      */
     async register(username, email, password) {
-        const response = await fetch(`${this.baseUrl}/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, email, password })
-        });
-
-        if (!response.ok) {
-            const result = {
-                ok: false
-            };
-
-            if (response.status === 400) {
-                result.error = 'Usuario ou email já existe';
-            } else if (response.status === 500) {
-                result.error = 'Erro interno do servidor';
-            } else {
-                result.error = 'Erro desconhecido';
-            }
-
-            return result;
-        }
-
-        const data = await response.json();
-
+      const response = await fetch(`${this.baseUrl}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+      });
+  
+      if (!response.ok)
         return {
-            ok: true,
-            user: data.user,
-            token: data.token
+          ok: false,
+          error:
+            response.status === 400
+              ? 'Usuário ou email já existente'
+              : response.status === 500
+              ? 'Erro interno do servidor'
+              : 'Erro desconhecido'
         };
+  
+      const data = await response.json();
+  
+      return {
+        ok: true,
+        user: data.user,
+        token: data.token
+      };
     }
-}
+  }
+  

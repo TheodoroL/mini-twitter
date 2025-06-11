@@ -4,78 +4,100 @@ import { StorageRepository } from "../repositories/StorageRepository.js";
 import { LoginView } from "../views/LoginView.js";
 import { RegisterView } from "../views/RegisterView.js";
 import { PostController } from "./PostController.js";
+
+/**
+ * Controlador responsável por gerenciar a autenticação do usuário,
+ * incluindo login, registro e navegação entre as views relacionadas.
+ */
 export class AuthController {
-  /**
-   * @type {LoginView}
+  /** 
+   * Instância da view de login.
+   * @type {LoginView} 
    */
   #loginView;
 
   /**
-   * @type {RegisterView}
+   * Instância da view de registro.
+   * @type {RegisterView} 
    */
   #registerView;
 
   /**
-   * @type {StorageRepository}
+   * Repositório para manipulação do armazenamento local.
+   * @type {StorageRepository} 
    */
   storageRepository;
 
   /**
-   * @type {AuthRepository}
+   * Repositório para comunicação com a API de autenticação.
+   * @type {AuthRepository} 
    */
   authRepository;
+
   /**
-   * @type {HTMLElement}
+   * Elemento HTML onde as views serão renderizadas.
+   * @type {HTMLElement} 
    */
   container;
 
   /**
-   * @param {HTMLElement} container 
+   * Inicializa o controlador com o container e cria instâncias dos repositórios e views.
+   * @param {HTMLElement} container Elemento HTML para renderização das views
    */
   constructor(container) {
-    this.container = container;
+    this.container = container
+    this.authRepository = new AuthRepository(gateways.AUTH_URL)
+    this.storageRepository = new StorageRepository()
 
-    this.authRepository = new AuthRepository(gateways.AUTH_URL);
-    this.storageRepository = new StorageRepository();
-
-    this.#loginView = new LoginView(this);
-    this.#registerView = new RegisterView(this);
+    this.#loginView = new LoginView(this)
+    this.#registerView = new RegisterView(this)
   }
 
+  /**
+   * Exibe a view de login.
+   */
   showLoginView() {
-    this.#loginView.render();
+    this.#loginView.render()
   }
 
+  /**
+   * Exibe a view de registro.
+   */
   showRegisterView() {
-    this.#registerView.render();
+    this.#registerView.render()
   }
 
+  /**
+   * Processa o pedido de login com email e senha.
+   * Armazena dados do usuário e token se bem-sucedido ou exibe erro.
+   * @param {string} email Email do usuário
+   * @param {string} password Senha do usuário
+   */
   async handleLoginRequest(email, password) {
-    const result = await this.authRepository.login(email, password);
+    const result = await this.authRepository.login(email, password)
 
     if (result.ok) {
-      // Armazenar o token e o usuário no localStorage
-      this.storageRepository.clear(); // Limpa o armazenamento local antes de armazenar novos dados
-      this.storageRepository.setItem('token', result.token);
-      this.storageRepository.setItem('user', JSON.stringify(result.user));
-      new PostController(this.container).showPostView(); // Redireciona para a página de feed após o login bem-sucedido
-    } else {
-      // Exibir mensagem de erro
-      this.#loginView.showError(result.error);
-    }
+      this.storageRepository.clear() // limpa armazenamento antes de salvar dados novos
+      this.storageRepository.setItem('token', result.token)
+      this.storageRepository.setItem('user', JSON.stringify(result.user))
+      new PostController(this.container).showPostView() // redireciona para feed após login
+    } else this.#loginView.showError(result.error) // exibe mensagem de erro
   }
 
+  /**
+   * Processa o pedido de registro com nome, email e senha.
+   * Armazena dados do usuário e token se bem-sucedido ou exibe erro.
+   * @param {string} name Nome do usuário
+   * @param {string} email Email do usuário
+   * @param {string} password Senha do usuário
+   */
   async handleRegisterRequest(name, email, password) {
-    const result = await this.authRepository.register(name, email, password);
+    const result = await this.authRepository.register(name, email, password)
 
     if (result.ok) {
-      // Armazenar o token e o usuário no localStorage
-      this.storageRepository.setItem('token', result.token);
-      this.storageRepository.setItem('user', JSON.stringify(result.user));
-      new PostController(this.container).showFeedView(); // Redireciona para a página de feed após o registro bem-sucedido
-    } else {
-      // Exibir mensagem de erro
-      this.#registerView.showError(result.error);
-    }
+      this.storageRepository.setItem('token', result.token)
+      this.storageRepository.setItem('user', JSON.stringify(result.user))
+      new PostController(this.container).showPostView() // redireciona para feed após registro
+    } else this.#registerView.showError(result.error) // exibe mensagem de erro
   }
 }
