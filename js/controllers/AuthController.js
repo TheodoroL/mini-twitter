@@ -1,4 +1,3 @@
-import gateways from "../gateways.js";
 import { AuthRepository } from "../repositories/AuthRepository.js";
 import { StorageRepository } from "../repositories/StorageRepository.js";
 import { LoginView } from "../views/LoginView.js";
@@ -46,7 +45,7 @@ export class AuthController {
    */
   constructor(container) {
     this.container = container
-    this.authRepository = new AuthRepository(gateways.AUTH_URL)
+    this.authRepository = new AuthRepository('https://mini-twitter-api-vy9q.onrender.com/api/auth')
     this.storageRepository = new StorageRepository()
 
     this.#loginView = new LoginView(this)

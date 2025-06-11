@@ -3,7 +3,6 @@ import { StorageRepository } from "../repositories/StorageRepository.js";
 import { ProfileView } from "../views/ProfileView.js";
 import { PostController } from "./PostController.js";
 import { PostRepository } from "../repositories/PostRepository.js";
-import gateways from "../gateways.js";
 import { AuthController } from "./AuthController.js";
 
 /**
@@ -26,9 +25,9 @@ export class ProfileController {
    */
   constructor(container) {
     this.container = container;
-    this.userRepository = new UserRepository(gateways.USERS_URL);
+    this.userRepository = new UserRepository("https://mini-twitter-api-vy9q.onrender.com/api/users");
     this.storageRepository = new StorageRepository();
-    this.postRepository = new PostRepository(gateways.POSTS_URL);
+    this.postRepository = new PostRepository("https://mini-twitter-api-vy9q.onrender.com/api/posts");
     this.#profileView = new ProfileView(this);
   }
 

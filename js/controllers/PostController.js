@@ -1,4 +1,3 @@
-import gateways from "../gateways.js";
 import { PostRepository } from "../repositories/PostRepository.js";
 import { StorageRepository } from "../repositories/StorageRepository.js";
 import { PostView } from "../views/PostView.js";
@@ -40,7 +39,7 @@ export class PostController {
    */
   constructor(container) {
     this.container = container;
-    this.postRepository = new PostRepository(gateways.POSTS_URL);
+    this.postRepository = new PostRepository("https://mini-twitter-api-vy9q.onrender.com/api/posts");
     this.storageRepository = new StorageRepository();
     this.#postView = new PostView(this);
   }
