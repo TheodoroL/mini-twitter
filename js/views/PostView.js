@@ -80,7 +80,7 @@ export class PostView {
     } catch {
       this.showError('Erro ao publicar a postagem. Tente novamente.');
     } finally {
-      postButton.innerHTML = 'Publicar';
+      postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i>';
       postButton.disabled = false;
       input.value = '';
       this.controller.container.querySelector('.char-count').textContent = '0 / 280';
@@ -181,9 +181,9 @@ export class PostView {
             <span class="user-name">${post.author.username}</span>
             <span class="separator">•</span>
             <span class="post-date">${new Date(post.createdAt).toLocaleDateString('pt-BR', {
-              year: 'numeric', month: '2-digit', day: '2-digit',
-              hour: '2-digit', minute: '2-digit'
-            })}</span>
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit'
+    })}</span>
           </div>
         </div>
       </div>
